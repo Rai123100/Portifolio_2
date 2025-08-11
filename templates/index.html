@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Hero Section -->
+    <section class="hero-section d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <div class="astronaut-float mb-4">
+                            <img src="{{ url_for('static', filename='images/astronaut.svg') }}" alt="Astronauta" class="astronaut-image">
+                        </div>
+                        <h1 class="hero-title mb-3">
+                            Olá, eu sou o <span class="text-neon">Raí</span>
+                        </h1>
+                        <h2 class="hero-subtitle mb-4">Desenvolvedor em órbita 🚀</h2>
+                        <p class="hero-description mb-4">
+                            Explorando o universo digital através do código, criando soluções inovadoras 
+                            que conectam mundos e transformam ideias em realidade.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="#projetos" class="btn btn-neon btn-lg me-3">
+                                <i class="fas fa-rocket me-2"></i>Ver Projetos
+                            </a>
+                            <a href="#contato" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-satellite-dish me-2"></i>Contato
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-animation">
+                        <div class="space-station">
+                            <img src="{{ url_for('static', filename='images/space-bg.svg') }}" alt="Estação Espacial" class="space-bg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-header text-center mb-5">
+                        <h2 class="section-title">
+                            <i class="fas fa-user-astronaut me-3"></i>Sobre Mim
+                        </h2>
+                        <p class="section-subtitle">Conhecendo o explorador do código</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="about-content glass-card p-4">
+                        <h3 class="mb-4">Navegando pelo Cosmos Digital</h3>
+                        <p class="mb-3">
+                            Como um astronauta explora o espaço, eu exploro o universo da programação, 
+                            sempre em busca de novas tecnologias e soluções inovadoras.
+                        </p>
+                        <p class="mb-3">
+                            Especializado em desenvolvimento web full-stack, com paixão por criar 
+                            experiências digitais que fazem a diferença na vida das pessoas.
+                        </p>
+                        <div class="stats-row mt-4">
+                            <div class="stat-item">
+                                <span class="stat-number text-neon">{{ projects|length }}+</span>
+                                <span class="stat-label">Projetos</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number text-neon">{{ technologies|length }}+</span>
+                                <span class="stat-label">Tecnologias</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number text-neon">{{ certificates|length }}+</span>
+                                <span class="stat-label">Certificados</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-visual">
+                        <div class="floating-code">
+                            <div class="code-line"><span class="code-comment">// Explorando o infinito</span></div>
+                            <div class="code-line"><span class="code-keyword">function</span> <span class="code-function">explorarEspaco</span>() {</div>
+                            <div class="code-line">&nbsp;&nbsp;<span class="code-keyword">return</span> <span class="code-string">"Código é arte!"</span>;</div>
+                            <div class="code-line">}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section id="tecnologias" class="section-padding bg-space">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-header text-center mb-5">
+                        <h2 class="section-title">
+                            <i class="fas fa-tools me-3"></i>Tecnologias
+                        </h2>
+                        <p class="section-subtitle">Ferramentas da minha nave espacial</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="tech-carousel-container">
+                        <div class="tech-carousel" id="techCarousel">
+                            <div class="carousel-track">
+                                {% for tech in technologies %}
+                                <div class="tech-item glass-card">
+                                    <div class="tech-icon">
+                                        <i class="{{ tech.icon }}"></i>
+                                    </div>
+                                    <h5 class="tech-name">{{ tech.name }}</h5>
+                                    <span class="tech-category">{{ tech.category }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-prev" onclick="moveCarousel(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-btn carousel-next" onclick="moveCarousel(1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projetos" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-header text-center mb-5">
+                        <h2 class="section-title">
+                            <i class="fas fa-rocket me-3"></i>Projetos
+                        </h2>
+                        <p class="section-subtitle">Missões realizadas no espaço digital</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if projects %}
+                    {% for project in projects %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="project-card glass-card">
+                            {% if project.image %}
+                            <div class="project-image">
+                                <img src="{{ url_for('static', filename='uploads/projects/' + project.image) }}" alt="{{ project.name }}" class="img-fluid">
+                                <div class="project-overlay">
+                                    <div class="project-links">
+                                        {% if project.demo_link %}
+                                        <a href="{{ project.demo_link }}" class="btn btn-sm btn-neon" target="_blank">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if project.github_link %}
+                                        <a href="{{ project.github_link }}" class="btn btn-sm btn-outline-light ms-2" target="_blank">
+                                            <i class="fab fa-github"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="project-content p-4">
+                                <h5 class="project-title">{{ project.name }}</h5>
+                                <p class="project-description">{{ project.description[:100] }}{% if project.description|length > 100 %}...{% endif %}</p>
+                                <div class="project-tech">
+                                    {% for tech in project.technologies.split(',') %}
+                                    <span class="tech-tag">{{ tech.strip() }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="col-12">
+                    <div class="empty-state text-center py-5">
+                        <i class="fas fa-satellite-dish fa-4x text-muted mb-4"></i>
+                        <h4>Nenhum projeto encontrado</h4>
+                        <p class="text-muted">As missões ainda estão sendo preparadas...</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificates Section -->
+    <section id="certificacoes" class="section-padding bg-space">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-header text-center mb-5">
+                        <h2 class="section-title">
+                            <i class="fas fa-award me-3"></i>Certificações
+                        </h2>
+                        <p class="section-subtitle">Conquistas na jornada espacial</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if certificates %}
+                    {% for cert in certificates %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="certificate-card glass-card p-4">
+                            <div class="cert-icon mb-3">
+                                <i class="fas fa-medal text-neon"></i>
+                            </div>
+                            <h5 class="cert-name">{{ cert.name }}</h5>
+                            <p class="cert-issuer">{{ cert.issuer }}</p>
+                            <p class="cert-date text-muted">{{ cert.date_issued.strftime('%B %Y') }}</p>
+                            {% if cert.certificate_url %}
+                            <a href="{{ cert.certificate_url }}" class="btn btn-sm btn-outline-neon" target="_blank">
+                                <i class="fas fa-external-link-alt me-1"></i>Ver Certificado
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="col-12">
+                    <div class="empty-state text-center py-5">
+                        <i class="fas fa-award fa-4x text-muted mb-4"></i>
+                        <h4>Nenhuma certificação encontrada</h4>
+                        <p class="text-muted">As conquistas estão sendo processadas...</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-header text-center mb-5">
+                        <h2 class="section-title">
+                            <i class="fas fa-satellite-dish me-3"></i>Contato
+                        </h2>
+                        <p class="section-subtitle">Vamos estabelecer uma conexão intergaláctica</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-content glass-card p-5 text-center">
+                        <div class="contact-info">
+                            <h4 class="mb-4">Pronto para uma nova missão?</h4>
+                            <p class="mb-4">Entre em contato comigo e vamos criar algo incrível juntos!</p>
+                            
+                            <div class="contact-methods">
+                                <a href="mailto:raicarvalho343@gmail.com" class="contact-link">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>raicarvalho343@gmail.com</span>
+                                </a>
+                            </div>
+                            
+                            <div class="social-links-large mt-4">
+                                <a href="#" class="social-link-large" title="GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="#" class="social-link-large" title="LinkedIn">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                <a href="#" class="social-link-large" title="WhatsApp">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

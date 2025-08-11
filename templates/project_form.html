@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - Painel Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="form-header glass-card p-4 mb-4">
+                <div class="d-flex align-items-center">
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-light me-3">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div>
+                        <h1 class="form-title mb-1">
+                            <i class="fas fa-rocket me-3"></i>{{ title }}
+                        </h1>
+                        <p class="text-muted mb-0">Configure os parâmetros da missão</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-form-card glass-card p-4">
+                <form method="POST" enctype="multipart/form-data" class="space-form">
+                    {{ form.hidden_tag() }}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="{{ form.name.id }}" class="form-label">
+                                <i class="fas fa-tag me-2"></i>{{ form.name.label.text }}
+                            </label>
+                            {{ form.name(class="form-control glass-input") }}
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.name.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label for="{{ form.status.id }}" class="form-label">
+                                <i class="fas fa-toggle-on me-2"></i>{{ form.status.label.text }}
+                            </label>
+                            {{ form.status(class="form-select glass-input") }}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="{{ form.description.id }}" class="form-label">
+                            <i class="fas fa-align-left me-2"></i>{{ form.description.label.text }}
+                        </label>
+                        {{ form.description(class="form-control glass-input", rows="4") }}
+                        {% if form.description.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.description.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="{{ form.technologies.id }}" class="form-label">
+                            <i class="fas fa-tools me-2"></i>{{ form.technologies.label.text }}
+                        </label>
+                        {{ form.technologies(class="form-control glass-input") }}
+                        <div class="form-text">{{ form.technologies.description }}</div>
+                        {% if form.technologies.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.technologies.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="{{ form.demo_link.id }}" class="form-label">
+                                <i class="fas fa-external-link-alt me-2"></i>{{ form.demo_link.label.text }}
+                            </label>
+                            {{ form.demo_link(class="form-control glass-input") }}
+                            {% if form.demo_link.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.demo_link.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label for="{{ form.github_link.id }}" class="form-label">
+                                <i class="fab fa-github me-2"></i>{{ form.github_link.label.text }}
+                            </label>
+                            {{ form.github_link(class="form-control glass-input") }}
+                            {% if form.github_link.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.github_link.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="{{ form.image.id }}" class="form-label">
+                            <i class="fas fa-image me-2"></i>{{ form.image.label.text }}
+                        </label>
+                        <div class="image-upload-area" onclick="document.getElementById('{{ form.image.id }}').click();">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                                <p class="mb-0">Clique para enviar uma imagem</p>
+                                <small class="text-muted">JPG, PNG, GIF ou WebP até 16MB</small>
+                            </div>
+                            {{ form.image(class="d-none", onchange="previewImage(this)") }}
+                        </div>
+                        {% if project and project.image %}
+                        <div class="current-image mt-3">
+                            <small class="text-muted">Imagem atual:</small>
+                            <img src="{{ url_for('static', filename='uploads/projects/' + project.image) }}" 
+                                 alt="Imagem atual" class="img-thumbnail ms-2" style="max-height: 60px;">
+                        </div>
+                        {% endif %}
+                        {% if form.image.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.image.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-actions d-flex justify-content-between">
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </a>
+                        {{ form.submit(class="btn btn-neon btn-lg") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    color: #fff;
+}
+
+.space-form .form-label {
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #00d4ff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25);
+    color: #fff;
+}
+
+.glass-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.glass-input option {
+    background-color: #1a1a2e;
+    color: #fff;
+}
+
+.image-upload-area {
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 3rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.image-upload-area:hover {
+    border-color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.upload-placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-neon {
+    background: linear-gradient(45deg, #00d4ff, #0099cc);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.btn-neon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+    color: #fff;
+}
+
+.current-image img {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+</style>
+
+<script>
+function previewImage(input) {
+    const uploadArea = input.parentElement;
+    const placeholder = uploadArea.querySelector('.upload-placeholder');
+    
+    if (input.files && input.files[0]) {
+        const fileName = input.files[0].name;
+        placeholder.innerHTML = `
+            <i class="fas fa-check-circle fa-2x mb-2 text-success"></i>
+            <p class="mb-0">${fileName}</p>
+            <small class="text-muted">Arquivo selecionado</small>
+        `;
+    }
+}
+</script>
+{% endblock %}

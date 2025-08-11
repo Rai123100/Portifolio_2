@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}Painel Admin - Raí Desenvolvedor Espacial{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="admin-header glass-card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="admin-title mb-2">
+                            <i class="fas fa-space-shuttle me-3"></i>Central de Comando
+                        </h1>
+                        <p class="text-muted mb-0">Painel de controle da estação espacial</p>
+                    </div>
+                    <div class="admin-stats">
+                        <span class="badge bg-neon me-2">{{ projects|length }} Projetos</span>
+                        <span class="badge bg-outline-neon">{{ technologies|length }} Tecnologias</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Projects Management -->
+        <div class="col-lg-8 mb-4">
+            <div class="admin-section glass-card p-4">
+                <div class="section-header d-flex justify-content-between align-items-center mb-4">
+                    <h3><i class="fas fa-rocket me-2"></i>Projetos</h3>
+                    <a href="{{ url_for('new_project') }}" class="btn btn-neon">
+                        <i class="fas fa-plus me-2"></i>Novo Projeto
+                    </a>
+                </div>
+
+                {% if projects %}
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Status</th>
+                                <th>Criado</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for project in projects %}
+                            <tr>
+                                <td>
+                                    <strong>{{ project.name }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ project.description[:50] }}...</small>
+                                </td>
+                                <td>
+                                    {% if project.status == 'published' %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check-circle me-1"></i>Publicado
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-pencil-alt me-1"></i>Rascunho
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ project.created_at.strftime('%d/%m/%Y') }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ url_for('edit_project', id=project.id) }}" 
+                                           class="btn btn-outline-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form method="POST" action="{{ url_for('delete_project', id=project.id) }}" 
+                                              style="display: inline;" 
+                                              onsubmit="return confirm('Tem certeza que deseja excluir este projeto?')">
+                                            <button type="submit" class="btn btn-outline-danger" title="Excluir">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state text-center py-5">
+                    <i class="fas fa-rocket fa-4x text-muted mb-4"></i>
+                    <h4>Nenhum projeto encontrado</h4>
+                    <p class="text-muted mb-4">Comece criando seu primeiro projeto espacial!</p>
+                    <a href="{{ url_for('new_project') }}" class="btn btn-neon">
+                        <i class="fas fa-plus me-2"></i>Criar Projeto
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-4 mb-4">
+            <div class="admin-section glass-card p-4 mb-4">
+                <h4><i class="fas fa-bolt me-2"></i>Ações Rápidas</h4>
+                <div class="quick-actions">
+                    <a href="{{ url_for('new_project') }}" class="quick-action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Novo Projeto</span>
+                    </a>
+                    <a href="{{ url_for('index') }}" class="quick-action-btn" target="_blank">
+                        <i class="fas fa-eye"></i>
+                        <span>Ver Site</span>
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="quick-action-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- System Status -->
+            <div class="admin-section glass-card p-4">
+                <h4><i class="fas fa-satellite me-2"></i>Status do Sistema</h4>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-dot bg-success"></span>
+                        <span>Database Online</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot bg-success"></span>
+                        <span>Upload System Active</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot bg-warning"></span>
+                        <span>{{ technologies|length }} Tecnologias Carregadas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    color: #fff;
+}
+
+.bg-neon {
+    background: linear-gradient(45deg, #00d4ff, #0099cc) !important;
+    color: #fff;
+}
+
+.bg-outline-neon {
+    background: transparent;
+    border: 1px solid #00d4ff;
+    color: #00d4ff;
+}
+
+.quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quick-action-btn {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.quick-action-btn:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: #00d4ff;
+    color: #00d4ff;
+    transform: translateX(5px);
+}
+
+.quick-action-btn i {
+    margin-right: 10px;
+    width: 20px;
+}
+
+.system-status {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 10px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.table-dark {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-dark thead th {
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 212, 255, 0.1);
+}
+
+.table-dark td, .table-dark th {
+    border-color: rgba(255, 255, 255, 0.1);
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 212, 255, 0.1);
+}
+</style>
+{% endblock %}

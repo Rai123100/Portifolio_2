@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Raí Desenvolvedor Espacial{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-background">
+        <!-- Animated space elements -->
+        <div class="floating-elements">
+            <div class="floating-rocket"></div>
+            <div class="floating-planet"></div>
+            <div class="floating-satellite"></div>
+        </div>
+        
+        <!-- Animated stars -->
+        <div class="stars-field"></div>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-5 col-lg-4">
+                <div class="login-card glass-card">
+                    <div class="login-header text-center mb-4">
+                        <div class="astronaut-icon mb-3">
+                            <img src="{{ url_for('static', filename='images/astronaut.svg') }}" alt="Astronauta" class="login-astronaut">
+                        </div>
+                        <h2 class="login-title">
+                            <i class="fas fa-rocket me-2"></i>Missão Login
+                        </h2>
+                        <p class="login-subtitle">Insira suas coordenadas de acesso</p>
+                    </div>
+                    
+                    <form method="POST" class="login-form">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.username_email(class="form-control glass-input", placeholder="Usuário ou Email") }}
+                            <label for="{{ form.username_email.id }}">
+                                <i class="fas fa-user me-2"></i>{{ form.username_email.label.text }}
+                            </label>
+                            {% if form.username_email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.username_email.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.password(class="form-control glass-input", placeholder="Senha") }}
+                            <label for="{{ form.password.id }}">
+                                <i class="fas fa-key me-2"></i>{{ form.password.label.text }}
+                            </label>
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.password.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            {{ form.remember_me(class="form-check-input glass-check") }}
+                            <label class="form-check-label" for="{{ form.remember_me.id }}">
+                                {{ form.remember_me.label.text }}
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-neon btn-lg login-btn") }}
+                        </div>
+                    </form>
+                    
+                    <div class="login-footer text-center mt-4">
+                        <p class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Acesso restrito à estação espacial
+                        </p>
+                        <a href="{{ url_for('index') }}" class="text-neon text-decoration-none">
+                            <i class="fas fa-arrow-left me-1"></i>Voltar ao início
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.login-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0c0c1e 0%, #1a1a2e 50%, #16213e 100%);
+    z-index: 1000;
+}
+
+.login-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.floating-rocket {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: 40px;
+    height: 40px;
+    background-image: url("{{ url_for('static', filename='images/rocket.svg') }}");
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-planet {
+    position: absolute;
+    bottom: 20%;
+    right: 15%;
+    width: 60px;
+    height: 60px;
+    background-image: url("{{ url_for('static', filename='images/planet.svg') }}");
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.floating-satellite {
+    position: absolute;
+    top: 60%;
+    left: 5%;
+    width: 30px;
+    height: 30px;
+    background: #00d4ff;
+    border-radius: 50%;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.stars-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+        radial-gradient(2px 2px at 40px 70px, #fff, transparent),
+        radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+        radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+        radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: twinkle 20s linear infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+@keyframes twinkle {
+    from { background-position: 0 0; }
+    to { background-position: -200px 0; }
+}
+
+.login-card {
+    position: relative;
+    z-index: 10;
+    padding: 2.5rem;
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: slideIn 0.8s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-astronaut {
+    width: 80px;
+    height: 80px;
+    animation: float 4s ease-in-out infinite;
+}
+
+.login-title {
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #00d4ff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25);
+    color: #fff;
+}
+
+.glass-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-floating > label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.glass-check {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-check:checked {
+    background-color: #00d4ff;
+    border-color: #00d4ff;
+}
+
+.login-btn {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 15px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+</style>
+{% endblock %}
