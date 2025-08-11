@@ -1,6 +1,6 @@
 # Overview
 
-This is a Flask-based portfolio website with an astronaut/space theme for a developer named Raí. The application serves as both a public portfolio showcase and an admin panel for content management. It features project galleries, technology showcases, certificates display, and a complete authentication system with an admin dashboard for managing content.
+This is a complete Flask-based astronaut-themed portfolio website for developer Raí. The application includes user authentication, admin dashboard for project management, technology carousel display, and modern space-themed UI design. All requested features have been implemented including the admin user (Rai123100), social media links, and technologies carousel with HTML, CSS, Bootstrap, Git, GitHub, Node.js, JavaScript, SQL Server, Python, SASS, Figma, Google Cloud, and AWS.
 
 # User Preferences
 
