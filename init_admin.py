@@ -8,13 +8,13 @@ def init_admin_user():
     
     if not admin:
         admin = User(
-            username='Raí123100',
+            username='Rai123100',
             email='raicarvalho343@gmail.com',
             is_admin=True
         )
         admin.set_password('rai123100')
         db.session.add(admin)
-        print("Administrador criado: Raí123100")
+        print("Administrador criado: Rai123100")
     
     # Initialize default technologies if none exist
     if Technology.query.count() == 0:
