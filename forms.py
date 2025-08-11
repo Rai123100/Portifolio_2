@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, TextAreaField, SelectField, BooleanField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, Length, Optional, URL
+from wtforms.validators import DataRequired, Email, Length, Optional, URL, EqualTo
 
 class LoginForm(FlaskForm):
     username_email = StringField('Usuário ou Email', validators=[
@@ -12,6 +12,29 @@ class LoginForm(FlaskForm):
     ])
     remember_me = BooleanField('Lembrar-me nesta estação')
     submit = SubmitField('Iniciar Missão 🚀')
+
+class RegisterForm(FlaskForm):
+    username = StringField('Nome de Usuário', validators=[
+        DataRequired(message='Escolha um nome de astronauta'),
+        Length(min=4, max=25, message='Nome deve ter entre 4 e 25 caracteres')
+    ])
+    
+    email = StringField('Email', validators=[
+        DataRequired(message='Email é necessário para comunicação espacial'),
+        Email(message='Formato de email inválido')
+    ])
+    
+    password = PasswordField('Senha', validators=[
+        DataRequired(message='Crie uma senha para proteger sua nave'),
+        Length(min=6, message='Senha deve ter pelo menos 6 caracteres')
+    ])
+    
+    password_confirm = PasswordField('Confirmar Senha', validators=[
+        DataRequired(message='Confirme sua senha'),
+        EqualTo('password', message='As senhas devem ser iguais')
+    ])
+    
+    submit = SubmitField('Entrar na Tripulação 🚀')
 
 class ProjectForm(FlaskForm):
     name = StringField('Nome do Projeto', validators=[

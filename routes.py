@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 from app import app, db
 from models import User, Project, Technology, Certificate
-from forms import LoginForm, ProjectForm
+from forms import LoginForm, RegisterForm, ProjectForm
 from utils import allowed_file, save_uploaded_file
 import os
 
@@ -49,6 +49,43 @@ def login():
             flash('Coordenadas de acesso inválidas. Verifique suas credenciais. 🛸', 'danger')
     
     return render_template('login.html', form=form)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """User registration page"""
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    form = RegisterForm()
+    if form.validate_on_submit():
+        # Check if username already exists
+        existing_user = User.query.filter_by(username=form.username.data).first()
+        if existing_user:
+            flash('Este nome de astronauta já está em uso. Escolha outro! 🚀', 'danger')
+            return render_template('register.html', form=form)
+        
+        # Check if email already exists
+        existing_email = User.query.filter_by(email=form.email.data).first()
+        if existing_email:
+            flash('Este email já está registrado na estação espacial! 📡', 'danger')
+            return render_template('register.html', form=form)
+        
+        # Create new user
+        user = User(
+            username=form.username.data,
+            email=form.email.data,
+            is_admin=False  # New users are not admin by default
+        )
+        user.set_password(form.password.data)
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        flash('Conta criada com sucesso! Bem-vindo à tripulação! 🌌', 'success')
+        login_user(user)
+        return redirect(url_for('index'))
+    
+    return render_template('register.html', form=form)
 
 @app.route('/logout')
 @login_required

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login - Raí Desenvolvedor Espacial{% endblock %}
+{% block title %}Registro - Raí Desenvolvedor Espacial{% endblock %}
 
 {% block content %}
 <div class="login-container">
@@ -18,29 +18,43 @@
     
     <div class="container">
         <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-5 col-lg-4">
+            <div class="col-md-6 col-lg-5">
                 <div class="login-card glass-card">
                     <div class="login-header text-center mb-4">
                         <div class="astronaut-icon mb-3">
                             <img src="{{ url_for('static', filename='images/astronaut.svg') }}" alt="Astronauta" class="login-astronaut">
                         </div>
                         <h2 class="login-title">
-                            <i class="fas fa-rocket me-2"></i>Missão Login
+                            <i class="fas fa-user-plus me-2"></i>Entrar na Tripulação
                         </h2>
-                        <p class="login-subtitle">Insira suas coordenadas de acesso</p>
+                        <p class="login-subtitle">Crie sua conta para explorar o espaço</p>
                     </div>
                     
                     <form method="POST" class="login-form">
                         {{ form.hidden_tag() }}
                         
                         <div class="form-floating mb-3">
-                            {{ form.username_email(class="form-control glass-input", placeholder="Usuário ou Email") }}
-                            <label for="{{ form.username_email.id }}">
-                                <i class="fas fa-user me-2"></i>{{ form.username_email.label.text }}
+                            {{ form.username(class="form-control glass-input", placeholder="Nome de Usuário") }}
+                            <label for="{{ form.username.id }}">
+                                <i class="fas fa-user-astronaut me-2"></i>{{ form.username.label.text }}
                             </label>
-                            {% if form.username_email.errors %}
+                            {% if form.username.errors %}
                                 <div class="invalid-feedback d-block">
-                                    {% for error in form.username_email.errors %}
+                                    {% for error in form.username.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            {{ form.email(class="form-control glass-input", placeholder="Email") }}
+                            <label for="{{ form.email.id }}">
+                                <i class="fas fa-satellite-dish me-2"></i>{{ form.email.label.text }}
+                            </label>
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.email.errors %}
                                         <small>{{ error }}</small>
                                     {% endfor %}
                                 </div>
@@ -61,14 +75,21 @@
                             {% endif %}
                         </div>
                         
-                        <div class="form-check mb-4">
-                            {{ form.remember_me(class="form-check-input glass-check") }}
-                            <label class="form-check-label" for="{{ form.remember_me.id }}">
-                                {{ form.remember_me.label.text }}
+                        <div class="form-floating mb-4">
+                            {{ form.password_confirm(class="form-control glass-input", placeholder="Confirmar Senha") }}
+                            <label for="{{ form.password_confirm.id }}">
+                                <i class="fas fa-shield-alt me-2"></i>{{ form.password_confirm.label.text }}
                             </label>
+                            {% if form.password_confirm.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.password_confirm.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
                         
-                        <div class="d-grid">
+                        <div class="d-grid mb-3">
                             {{ form.submit(class="btn btn-neon btn-lg login-btn") }}
                         </div>
                     </form>
@@ -76,10 +97,10 @@
                     <div class="login-footer text-center mt-4">
                         <p class="text-muted mb-2">
                             <i class="fas fa-info-circle me-1"></i>
-                            Novo por aqui?
+                            Já tem uma conta na estação?
                         </p>
-                        <a href="{{ url_for('register') }}" class="text-neon text-decoration-none">
-                            <i class="fas fa-user-plus me-1"></i>Criar Conta
+                        <a href="{{ url_for('login') }}" class="text-neon text-decoration-none">
+                            <i class="fas fa-sign-in-alt me-1"></i>Fazer Login
                         </a>
                         <br>
                         <a href="{{ url_for('index') }}" class="text-muted text-decoration-none mt-2 d-inline-block">
@@ -251,16 +272,6 @@
 
 .form-floating > label {
     color: rgba(255, 255, 255, 0.7);
-}
-
-.glass-check {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.glass-check:checked {
-    background-color: #00d4ff;
-    border-color: #00d4ff;
 }
 
 .login-btn {
